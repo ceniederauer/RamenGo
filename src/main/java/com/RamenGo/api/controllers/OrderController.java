@@ -2,6 +2,7 @@ package com.RamenGo.api.controllers;
 
 import com.RamenGo.api.dtos.requests.OrderRequest;
 import com.RamenGo.api.dtos.responses.OrderResponse;
+import com.RamenGo.api.exceptions.ForbbidenException;
 import com.RamenGo.api.models.Broth;
 import com.RamenGo.api.models.Protein;
 import com.RamenGo.api.services.OrderService;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-
+@CrossOrigin("*")
 public class OrderController {
 
   private final OrderService orderService;
@@ -26,7 +27,7 @@ public class OrderController {
     if (apiKey.equals(this.apiKey)) {
       return new ResponseEntity<>(this.orderService.listBroths(), HttpStatus.OK);
     }
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    throw new ForbbidenException("x-api-key header missing");
   }
 
   @GetMapping("/proteins")
@@ -34,7 +35,7 @@ public class OrderController {
     if (apiKey.equals(this.apiKey)) {
       return new ResponseEntity<>(this.orderService.listProteins(), HttpStatus.OK);
     }
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    throw new ForbbidenException("x-api-key header missing");
   }
 
   @PostMapping("/orders")
@@ -44,6 +45,6 @@ public class OrderController {
     if (apiKey.equals(this.apiKey)) {
       return this.orderService.createOrder(orderRequest, apiKey);
     }
-    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    throw new ForbbidenException("x-api-key header missing");
   }
 }

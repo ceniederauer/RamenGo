@@ -6,4 +6,7 @@ import lombok.Data;
 public class OrderRequest {
   private String brothId;
   private String proteinId;
+
+  public OrderRequest(String number, String number1) {
+  }
 }

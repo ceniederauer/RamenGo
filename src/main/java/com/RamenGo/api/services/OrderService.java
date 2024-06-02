@@ -2,6 +2,8 @@ package com.RamenGo.api.services;
 
 import com.RamenGo.api.dtos.requests.OrderRequest;
 import com.RamenGo.api.dtos.responses.OrderResponse;
+import com.RamenGo.api.exceptions.InternalServerErrorException;
+import com.RamenGo.api.exceptions.InvalidRequestException;
 import com.RamenGo.api.models.Broth;
 import com.RamenGo.api.models.Protein;
 import com.RamenGo.api.repositories.BrothRepository;
@@ -13,9 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +37,8 @@ public class OrderService {
   }
 
   public ResponseEntity<OrderResponse> createOrder(OrderRequest orderRequest, String apiKey) throws JsonProcessingException {
-    if (orderRequest.getBrothId().isEmpty() || orderRequest.getProteinId().isEmpty()) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    if (ObjectUtils.isEmpty(orderRequest.getBrothId()) || ObjectUtils.isEmpty(orderRequest.getProteinId())) {
+      throw new InvalidRequestException("both brothId and proteinId are required");
     }
     String generateOrder = restClient.post()
         .uri("https://api.tech.redventures.com.br/orders/generate-id")
@@ -42,7 +46,7 @@ public class OrderService {
         .retrieve()
         .body(String.class);
     if(generateOrder.isEmpty()){
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new InternalServerErrorException("could not place order");
     }
     // Parse the JSON string
     ObjectMapper objectMapper = new ObjectMapper();
