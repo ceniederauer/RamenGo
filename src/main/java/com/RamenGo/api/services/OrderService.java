@@ -19,7 +19,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +31,7 @@ public class OrderService {
   public List<Protein> listProteins() {
     return proteinRepository.findAll();
   }
+
   public List<Broth> listBroths() {
     return brothRepository.findAll();
   }
@@ -45,7 +45,7 @@ public class OrderService {
         .header("x-api-key", apiKey)
         .retrieve()
         .body(String.class);
-    if(generateOrder.isEmpty()){
+    if (generateOrder.isEmpty()) {
       throw new InternalServerErrorException("could not place order");
     }
     // Parse the JSON string
