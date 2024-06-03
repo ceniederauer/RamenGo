@@ -19,32 +19,32 @@ import java.util.List;
 @CrossOrigin("*")
 public class OrderController {
 
+  private static final String API_KEY = "ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf";
   private final OrderService orderService;
-  private String apiKey = "ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf";
 
   @GetMapping("/broths")
   public ResponseEntity<List<Broth>> broths(@RequestHeader("x-api-key") String apiKey) {
-    if (apiKey.equals(this.apiKey)) {
-      return new ResponseEntity<>(this.orderService.listBroths(), HttpStatus.OK);
-    }
-    throw new ForbbidenException("x-api-key header missing");
+    validateHeader(apiKey);
+    return new ResponseEntity<>(this.orderService.listBroths(), HttpStatus.OK);
   }
 
   @GetMapping("/proteins")
   public ResponseEntity<List<Protein>> proteins(@RequestHeader("x-api-key") String apiKey) {
-    if (apiKey.equals(this.apiKey)) {
-      return new ResponseEntity<>(this.orderService.listProteins(), HttpStatus.OK);
-    }
-    throw new ForbbidenException("x-api-key header missing");
+    validateHeader(apiKey);
+    return new ResponseEntity<>(this.orderService.listProteins(), HttpStatus.OK);
   }
 
   @PostMapping("/orders")
   public ResponseEntity<OrderResponse> order(
       @RequestHeader("x-api-key") String apiKey,
       @RequestBody OrderRequest orderRequest) throws JsonProcessingException {
-    if (apiKey.equals(this.apiKey)) {
-      return this.orderService.createOrder(orderRequest, apiKey);
+    validateHeader(apiKey);
+    return this.orderService.createOrder(orderRequest, apiKey);
+  }
+
+  private void validateHeader(String apiKey) {
+    if (!apiKey.equals(API_KEY)) {
+      throw new ForbbidenException();
     }
-    throw new ForbbidenException("x-api-key header missing");
   }
 }
