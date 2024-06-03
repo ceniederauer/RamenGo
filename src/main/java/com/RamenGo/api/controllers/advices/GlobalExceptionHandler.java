@@ -6,6 +6,7 @@ import com.RamenGo.api.exceptions.InternalServerErrorException;
 import com.RamenGo.api.exceptions.InvalidRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(ForbbidenException.class)
+  @ExceptionHandler(MissingRequestHeaderException.class)
   @ResponseBody
   @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ErrorResponse handleForbbidenException(MissingRequestHeaderException exception) {
+    return new ErrorResponse("x-api-key header missing");
+  }
+
+  @ExceptionHandler(ForbbidenException.class)
+  @ResponseBody
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public ErrorResponse handleForbbidenException(ForbbidenException exception) {
-    return new ErrorResponse(exception.getMessage());
+    return new ErrorResponse("unauthorized");
   }
 
   @ExceptionHandler(InternalServerErrorException.class)

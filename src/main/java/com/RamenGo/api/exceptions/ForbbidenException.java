@@ -1,7 +1,7 @@
 package com.RamenGo.api.exceptions;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ForbbidenException extends RuntimeException{
-  public ForbbidenException(String message){
-    super(message);
-  }
 }
