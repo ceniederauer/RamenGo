@@ -30,3 +30,4 @@ O body de /orders deve ser:
 ## Para o futuro
 - Adicionar testes unitários
 - Criar um CI e um CD para melhorar a forma de deploy da aplicação
+- Adicionar um filtro mais rebuscado para confirmar o header da API
