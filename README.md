@@ -27,6 +27,7 @@ O body de /orders deve ser:
   "proteinId": "1"
 }
 ```
+Na AWS foi criada uma instância EC2 e uma VPC, a regra da EC2 é permitir qualquer requisição HTTP tcp para a porta 8080 e também permitir acesso via SSH
 ## Para o futuro
 - Adicionar testes unitários
 - Criar um CI e um CD para melhorar a forma de deploy da aplicação
