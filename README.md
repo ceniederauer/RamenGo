@@ -9,6 +9,10 @@
 
 ## Sobre o projeto
 Temos 3 rotas que podem ser utilizadas:
+> O header de todas deve ser:
+```
+x-api-key: ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf
+```
 * 44.192.59.53:8080/proteins
 * 44.192.59.53:8080/broths
 * 44.192.59.53:8080/orders
